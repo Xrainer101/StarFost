@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class OnRailsState : PlayerState
 {
+    [SerializeField] private Transform rail;
+
+    Vector2 movementBounds = new Vector2(18f, 9f);
+
     public OnRailsState(PlayerStateMachine context, PlayerStateMachine.EPlayerState ePlayerState) : base(context, ePlayerState)
     {
         
@@ -18,12 +22,13 @@ public class OnRailsState : PlayerState
         horiInput = Input.GetAxis("Horizontal");
         vertInput = Input.GetAxis("Vertical");
 
+        Movement();
         XZTilting();
         ClampToScreen();
     }
     public override void FixedUpdateState()
     {
-        Movement();
+        
     }
     public override void ExitState()
     {
@@ -46,8 +51,15 @@ public class OnRailsState : PlayerState
     void ClampToScreen()
     {
         Vector3 pos = Camera.main.WorldToViewportPoint(ctx.transform.position);
-        pos.x = Mathf.Clamp01(pos.x);
-        pos.y = Mathf.Clamp01(pos.y);
+        pos.x = Mathf.Clamp(pos.x, 0.1f, 0.9f);
+        pos.y = Mathf.Clamp(pos.y, 0.1f, 0.9f);
         ctx.transform.position = Camera.main.ViewportToWorldPoint(pos);
+    }
+
+    void ClampToBounds()
+    {
+        float clampedX = Mathf.Clamp(ctx.transform.localPosition.x, -movementBounds.x, movementBounds.x);
+        float clampedY = Mathf.Clamp(ctx.transform.localPosition.y, -movementBounds.y, movementBounds.y);
+        ctx.transform.position = new Vector3(clampedX, clampedY, ctx.transform.localPosition.z);
     }
 }
