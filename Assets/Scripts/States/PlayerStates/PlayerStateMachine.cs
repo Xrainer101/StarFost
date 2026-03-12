@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // This is a state machine that uses enums from the EPlayerState list
@@ -17,6 +18,15 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     public float moveSpeed = 15f;
     public float tilt = 30f;
     public float tiltSpeed = 0.1f;
+    public float leanSpeed;
+    public float firstTapTime, timeBetTaps;
+    public bool coroutineActive;
+    public int tapCountL, tapCountR;
+    public bool rollLeft, rollRight;
+    public float barrelTime;
+    public bool isRolling;
+    public GameObject barrelDeflect;
+    public ParticleSystem barrelRollEffect;
 
     void Awake()
     {

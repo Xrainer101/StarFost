@@ -16,6 +16,15 @@ public class OnRailsState : PlayerState
     public override void EnterState()
     {
         Debug.Log("On rails mode!");
+        ctx.firstTapTime = 0f;
+        ctx.timeBetTaps = 0.25f;
+        ctx.tapCountL = 0;
+        ctx.tapCountR = 0;
+
+        ctx.coroutineActive = false;
+        ctx.isRolling = false;
+        ctx.barrelDeflect.SetActive(false);
+        ctx.barrelRollEffect.Stop();
     }
     public override void UpdateState()
     {
@@ -25,6 +34,7 @@ public class OnRailsState : PlayerState
         Movement();
         XZTilting();
         ClampToScreen();
+        ShoulderInputs();
     }
     public override void FixedUpdateState()
     {
@@ -51,8 +61,8 @@ public class OnRailsState : PlayerState
     void ClampToScreen()
     {
         Vector3 pos = Camera.main.WorldToViewportPoint(ctx.transform.position);
-        pos.x = Mathf.Clamp(pos.x, 0.1f, 0.9f);
-        pos.y = Mathf.Clamp(pos.y, 0.1f, 0.9f);
+        pos.x = Mathf.Clamp(pos.x, 0.08f, 0.92f);
+        pos.y = Mathf.Clamp(pos.y, 0.08f, 0.92f);
         ctx.transform.position = Camera.main.ViewportToWorldPoint(pos);
     }
 
