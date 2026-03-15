@@ -130,6 +130,13 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
         ctx.barrelRollEffect.Play();
         ctx.isRolling = true;
 
+        var donutShape = ctx.barrelRollEffect.shape;
+
+        if(ctx.rollLeft)
+            donutShape.arcSpeedMultiplier = 9f;
+        if(ctx.rollRight)
+            donutShape.arcSpeedMultiplier = -9f;
+
         while(t < dur)
         {
             t += Time.deltaTime;

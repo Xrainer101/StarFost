@@ -25,6 +25,8 @@ public class OnRailsState : PlayerState
         ctx.isRolling = false;
         ctx.barrelDeflect.SetActive(false);
         ctx.barrelRollEffect.Stop();
+        ctx.wingTrailL.Stop();
+        ctx.wingTrailR.Stop();
     }
     public override void UpdateState()
     {
