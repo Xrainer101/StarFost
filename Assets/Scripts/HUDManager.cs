@@ -5,13 +5,28 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    public Slider actionCDSlider;
+    public Slider boostMeter;
     public bool actionCooling;
+    public bool hitZero;
+
+    [SerializeField] Image backgroundImage;
+    Color meterBackgroundColor;
+    public Color overheatColor = Color.red;
+
+    [Header("Settings")]
+    public float overheatPenaltyTime = 2.5f;
+    public float drainSpeed = 2f;
 
     void Awake()
     {
         actionCooling = true;
-        actionCDSlider.value = 1;
+        hitZero = false;
+        boostMeter.value = 1;
+
+        if(backgroundImage != null)
+        {
+            meterBackgroundColor = backgroundImage.color;
+        }
     }
 
     // Start is called before the first frame update
@@ -28,9 +43,41 @@ public class HUDManager : MonoBehaviour
 
     public void ActionCooldown()
     {
+        if(boostMeter.value <= 0f && !hitZero)
+        {
+            StartCoroutine(OverheatDelay());
+        }
+
         if (actionCooling)
-            actionCDSlider.value = Mathf.Clamp01(actionCDSlider.value + Time.deltaTime / 2f);
+        {
+            if(!hitZero)
+            {
+                boostMeter.value = Mathf.Clamp01(boostMeter.value + Time.deltaTime / drainSpeed);
+            }
+        }
         else
-            actionCDSlider.value = Mathf.Clamp01(actionCDSlider.value - Time.deltaTime / 2f);
+        {
+            boostMeter.value = Mathf.Clamp01(boostMeter.value - Time.deltaTime / drainSpeed);
+        }
+    }
+
+    IEnumerator OverheatDelay()
+    {
+        hitZero = true;
+
+        if(backgroundImage != null)
+        {
+            backgroundImage.color = overheatColor;
+        }
+
+        yield return new WaitForSeconds(overheatPenaltyTime);
+
+        if(backgroundImage != null)
+        {
+            backgroundImage.color = meterBackgroundColor;
+        }
+
+        boostMeter.value = 0.01f; // Make sure we aren't stuck at 0
+        hitZero = false;
     }
 }

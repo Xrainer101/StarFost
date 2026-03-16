@@ -14,6 +14,8 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
         Death,
     }
 
+    public Transform playerPos;
+
     [Header("Normal movement variables")] // for movement
     public float moveSpeed = 15f;
     public float speedStore;
@@ -27,20 +29,17 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     [Header("Boost variables")]
     public ShipEmissions shipEmitters;
     public Vector3 normalOffset = new Vector3(0, 1, -8);
-    public Vector3 boostOffset = new Vector3(0, 3, -9);
-    public Vector3 brakeOffset = new Vector3(0, 3, -7);
+    public Vector3 boostOffset = new Vector3(0, 1, -9);
+    public Vector3 brakeOffset = new Vector3(0, 1, -7);
     public float transitionSpeed = 5f;
     public float normalFOV = 60f;
-    public float boostFOV = 80f;
-    public float brakeFOV = 50f;
+    public float boostFOV = 70f;
+    public float brakeFOV = 55f;
 
     [Header("Barrel roll variables")]
     public float firstTapTime, timeBetTaps;
-    public int tapCountL, tapCountR;
-    public bool rollLeft, rollRight;
     public float barrelTime;
     public float barrelEffectSpeed;
-    public bool isRolling;
     public GameObject barrelDeflect;
     public ParticleSystem barrelRollEffect;
 
