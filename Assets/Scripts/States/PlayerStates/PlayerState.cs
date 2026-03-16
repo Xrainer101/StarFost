@@ -136,9 +136,9 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
         var donutShape = ctx.barrelRollEffect.shape;
 
         if(ctx.rollLeft)
-            donutShape.arcSpeedMultiplier = ctx.barrelEffectSpeed;
-        if(ctx.rollRight)
             donutShape.arcSpeedMultiplier = -ctx.barrelEffectSpeed;
+        if(ctx.rollRight)
+            donutShape.arcSpeedMultiplier = ctx.barrelEffectSpeed;
 
         while(t < dur)
         {
@@ -181,8 +181,8 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
 
     protected void SpeedAction(float newSpeed, Vector3 targetOffset, float targetFOV)
     {
-        Debug.Log(targetOffset.ToString());
-        Debug.Log(targetFOV.ToString());
+        // Debug.Log(targetOffset.ToString());
+        // Debug.Log(targetFOV.ToString());
         ctx.moveSpeed = newSpeed;
         if(ctx.vTransposer != null){
             ctx.vTransposer.m_FollowOffset = Vector3.Lerp(
