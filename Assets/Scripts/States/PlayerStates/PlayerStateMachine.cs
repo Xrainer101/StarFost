@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 // This is a state machine that uses enums from the EPlayerState list
@@ -13,24 +14,40 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
         Death,
     }
 
-    [Header("State Variables (Shared)")] // for movement
+    [Header("Normal movement variables")] // for movement
     public float moveSpeed = 15f;
+    public float speedStore;
     public float tilt = 30f;
     public float tiltSpeed = 0.1f;
     public float leanSpeed;
+    public CinemachineVirtualCamera vCam;
+    public CinemachineTransposer vTransposer;
+    public HUDManager hudManager;
+
+    [Header("Boost variables")]
+    public ShipEmissions shipEmitters;
+    public Vector3 normalOffset = new Vector3(0, 1, -8);
+    public Vector3 boostOffset = new Vector3(0, 3, -9);
+    public Vector3 brakeOffset = new Vector3(0, 3, -7);
+    public float transitionSpeed = 5f;
+    public float normalFOV = 60f;
+    public float boostFOV = 80f;
+    public float brakeFOV = 50f;
+
+    [Header("Barrel roll variables")]
     public float firstTapTime, timeBetTaps;
-    public bool coroutineActive;
     public int tapCountL, tapCountR;
     public bool rollLeft, rollRight;
     public float barrelTime;
+    public float barrelEffectSpeed;
     public bool isRolling;
     public GameObject barrelDeflect;
     public ParticleSystem barrelRollEffect;
-    public ParticleSystem wingTrailL;
-    public ParticleSystem wingTrailR;
 
     void Awake()
     {
+        speedStore = moveSpeed;
+        shipEmitters = GetComponent<ShipEmissions>();
         InitializeStates(); // Initialize the states before the game starts
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class OnRailsState : PlayerState
@@ -16,17 +17,21 @@ public class OnRailsState : PlayerState
     public override void EnterState()
     {
         Debug.Log("On rails mode!");
+        ctx.vTransposer = ctx.vCam.GetCinemachineComponent<CinemachineTransposer>();
+        if(ctx.vTransposer != null)
+        {
+            ctx.vTransposer.m_FollowOffset.z = -8f;
+        }
+        
         ctx.firstTapTime = 0f;
         ctx.timeBetTaps = 0.25f;
         ctx.tapCountL = 0;
         ctx.tapCountR = 0;
 
-        ctx.coroutineActive = false;
+        coroutineActive = false;
         ctx.isRolling = false;
         ctx.barrelDeflect.SetActive(false);
         ctx.barrelRollEffect.Stop();
-        ctx.wingTrailL.Stop();
-        ctx.wingTrailR.Stop();
     }
     public override void UpdateState()
     {
@@ -37,6 +42,10 @@ public class OnRailsState : PlayerState
         XZTilting();
         ClampToScreen();
         ShoulderInputs();
+        SpeedInput();
+
+        if(ctx.hudManager.actionCDSlider.value >= 0.99f)
+            actionReady = true;
     }
     public override void FixedUpdateState()
     {
