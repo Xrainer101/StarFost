@@ -5846,7 +5846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
+  m_BindingMode: 0
   m_FollowOffset: {x: 0, y: 1, z: -8}
   m_XDamping: 1.5
   m_YDamping: 1.5
@@ -6162,6 +6162,37 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!1 &802811361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 802811362}
+  m_Layer: 0
+  m_Name: LaserPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &802811362
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802811361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1229990229}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &870146681
 GameObject:
   m_ObjectHideFlags: 0
@@ -6637,6 +6668,7 @@ GameObject:
   - component: {fileID: 1229990230}
   - component: {fileID: 1229990231}
   - component: {fileID: 1229990232}
+  - component: {fileID: 1229990233}
   m_Layer: 0
   m_Name: --Player--
   m_TagString: Untagged
@@ -6664,6 +6696,7 @@ Transform:
   - {fileID: 870146682}
   - {fileID: 199383641}
   - {fileID: 1465928838}
+  - {fileID: 802811362}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1229990230
@@ -6699,6 +6732,7 @@ MonoBehaviour:
   tilt: 30
   tiltSpeed: 0.1
   leanSpeed: 0.35
+  rail: {fileID: 569291496}
   vCam: {fileID: 554436291}
   vTransposer: {fileID: 0}
   hudManager: {fileID: 385646616}
@@ -6735,6 +6769,22 @@ MonoBehaviour:
   emitTrails: 0
   scaleMultiplier: 1.5
   scaleSpeed: 5
+--- !u!114 &1229990233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229990228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac55adf6ee274a00a2aa6df852dd78f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laserPrefab: {fileID: 3062397232053182891, guid: 23005a638ce89469181b246ffbc91c56,
+    type: 3}
+  shootPoint: {fileID: 802811362}
+  fireRate: 0.15
 --- !u!1 &1465928837
 GameObject:
   m_ObjectHideFlags: 0
@@ -7548,7 +7598,7 @@ ParticleSystem:
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
-    alignToDirection: 0
+    alignToDirection: 1
     m_Texture: {fileID: 0}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
@@ -16682,6 +16732,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 961739753}
+  - {fileID: 554436292}
   - {fileID: 203844589}
   - {fileID: 1160234427}
   - {fileID: 385646617}
@@ -16691,6 +16742,5 @@ SceneRoots:
   - {fileID: 236829048}
   - {fileID: 194834577}
   - {fileID: 1692775827}
-  - {fileID: 554436292}
   - {fileID: 1859169078}
   - {fileID: 261623191}

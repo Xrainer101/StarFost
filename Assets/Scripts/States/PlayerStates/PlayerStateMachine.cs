@@ -22,6 +22,7 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     public float tilt = 30f;
     public float tiltSpeed = 0.1f;
     public float leanSpeed;
+    public Transform rail;
     public CinemachineVirtualCamera vCam;
     public CinemachineTransposer vTransposer;
     public HUDManager hudManager;

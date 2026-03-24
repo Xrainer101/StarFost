@@ -242,7 +242,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
         float radius = 5f;
 
         somersault = true;
-        //ctx.vCam.LookAt = ctx.playerPos;
+        ctx.vCam.Follow = ctx.playerPos;
 
         Vector3 startPos = ctx.transform.position;
         // Debug.Log(startPos.ToString());
@@ -286,7 +286,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
         // Debug.Log("Snapped position: " + ctx.transform.position.ToString());
         ctx.transform.localEulerAngles = new Vector3(startRotX, 0f, 0f);
 
-        //ctx.vCam.LookAt = null;
+        ctx.vCam.Follow = ctx.rail;
         ctx.shipEmitters.EmitNorm();
         somersault = false;
     }
