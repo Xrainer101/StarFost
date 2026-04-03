@@ -8,6 +8,8 @@ public class LaserProjectile : MonoBehaviour
     [Header("Laser Settings")]
     public float speed = 100f;
     public float lifeTime = 2f;
+    public int damage = 10;
+
     private float lifeTimer;
 
     // Reference to the pool that owns this laser

@@ -65,23 +65,40 @@ public class PlayerLaserPool : MonoBehaviour
 
     private void Shoot()
     {
+        int currDamage = (blasterUpgrade == 2) ? 20 : 10;
+
         if(blasterUpgrade == 0)
         {
-            ShootFromPoint(centerShootPoint);
+            ShootFromPoint(centerShootPoint, currDamage);
         } else
         {
-            ShootFromPoint(leftShootPoint);
-            ShootFromPoint(rightShootPoint);
+            ShootFromPoint(leftShootPoint, currDamage);
+            ShootFromPoint(rightShootPoint, currDamage);
         }
     }
 
-    private void ShootFromPoint(Transform laserPoint)
+    private void ShootFromPoint(Transform laserPoint, int damage)
     {
-        GameObject activeLaaser = laserPool.Get();
+        GameObject activeLaser = laserPool.Get();
 
         // Snap it to the gun barrel and point it forward
-        activeLaaser.transform.position = laserPoint.position;
-        activeLaaser.transform.rotation = laserPoint.rotation;
+        activeLaser.transform.position = laserPoint.position;
+        activeLaser.transform.rotation = laserPoint.rotation;
+
+        LaserProjectile laserScript = activeLaser.GetComponent<LaserProjectile>();
+        if(laserScript != null)
+        {
+            laserScript.damage = damage;
+        }
+    }
+
+    public void UpgradeBlaster()
+    {
+        if(blasterUpgrade < 2)
+        {
+            blasterUpgrade++;
+            Debug.Log("Blaster upgraded to level " + blasterUpgrade);
+        }
     }
 
     // -- POOL METHODS --
