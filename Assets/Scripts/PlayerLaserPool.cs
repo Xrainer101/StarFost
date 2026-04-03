@@ -5,12 +5,18 @@ using UnityEngine.Pool;
 
 public class PlayerLaserPool : MonoBehaviour
 {
+    [Header("Upgrade State")]
+    [Range(0,2)] // Adds a slider in the Unity editor for the below variable
+    public int blasterUpgrade = 0; // 0 = No upgrade, 1 = Twin blasters, 2 = Green lasers
+
     [Header("References")]
     public GameObject laserPrefab;
-    public Transform shootPoint;
+    public Transform centerShootPoint;
+    public Transform leftShootPoint;
+    public Transform rightShootPoint;
 
     [Header("Shooting Stats")]
-    public float fireRate = 0.15f;
+    public float fireRate = 0.1f;
     private float fireTimer;
 
     private ObjectPool<GameObject> laserPool;
@@ -59,11 +65,23 @@ public class PlayerLaserPool : MonoBehaviour
 
     private void Shoot()
     {
+        if(blasterUpgrade == 0)
+        {
+            ShootFromPoint(centerShootPoint);
+        } else
+        {
+            ShootFromPoint(leftShootPoint);
+            ShootFromPoint(rightShootPoint);
+        }
+    }
+
+    private void ShootFromPoint(Transform laserPoint)
+    {
         GameObject activeLaaser = laserPool.Get();
 
         // Snap it to the gun barrel and point it forward
-        activeLaaser.transform.position = shootPoint.position;
-        activeLaaser.transform.rotation = shootPoint.rotation;
+        activeLaaser.transform.position = laserPoint.position;
+        activeLaaser.transform.rotation = laserPoint.rotation;
     }
 
     // -- POOL METHODS --
