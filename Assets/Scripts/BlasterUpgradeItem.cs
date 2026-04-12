@@ -8,6 +8,13 @@ public class BlasterUpgradeItem : MonoBehaviour
     public float spinSpeed = 90f; // Degrees per second
     public ParticleSystem collectEffectsPrefab;
 
+    Transform upgradeTransform;
+
+    void Start()
+    {
+        upgradeTransform = GetComponent<Transform>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +38,7 @@ public class BlasterUpgradeItem : MonoBehaviour
 
                 // Particle effect
                 ParticleSystem collectEffect = Instantiate(collectEffectsPrefab); // Instantiate so it keeps going after the item is destroyed
+                collectEffect.transform.position = upgradeTransform.position;
                 collectEffect.Play();
 
                 // Destroy the item
