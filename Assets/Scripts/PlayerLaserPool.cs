@@ -10,16 +10,24 @@ public class PlayerLaserPool : MonoBehaviour
     public int blasterUpgrade = 0; // 0 = No upgrade, 1 = Twin blasters, 2 = Green lasers
 
     [Header("References")]
-    public GameObject laserPrefab;
     public Transform centerShootPoint;
     public Transform leftShootPoint;
     public Transform rightShootPoint;
 
-    [Header("Shooting Stats")]
+    [Header("Normal Lasers")]
+    public GameObject laserPrefab;
     public float fireRate = 0.1f;
     private float fireTimer;
-
     private ObjectPool<GameObject> laserPool;
+
+    [Header("Charge Shot")]
+    public GameObject chargeShotPrefab;
+    public ParticleSystem shipChargeEffect;
+    public float chargeTimeRequired = 1f;
+
+    private float currentChargeTime = 0f;
+    private bool isFullyCharged = false;
+    private ObjectPool<GameObject> chargePool;
 
     // Start is called before the first frame update
     void Start()
@@ -27,13 +35,15 @@ public class PlayerLaserPool : MonoBehaviour
         // Initialize the pool
         laserPool = new ObjectPool<GameObject>(
             createFunc: CreateLaser,          // 1. How to make a new laser
-            actionOnGet: TakeLaserFromPool,   // 2. What to do when we borrow one
-            actionOnRelease: ReturnLaserToPool, // 3. What to do when it's returned
-            actionOnDestroy: DestroyLaser,    // 4. What to do if the pool gets too full
+            actionOnGet: TakeFromPool,   // 2. What to do when we borrow one
+            actionOnRelease: ReturnToPool, // 3. What to do when it's returned
+            actionOnDestroy: DestroyObj,    // 4. What to do if the pool gets too full
             collectionCheck: false,
             defaultCapacity: 30, // Start by making 30 lasers
             maxSize: 100         // Never make more than 100
         );
+
+        chargePool = new ObjectPool<GameObject>(CreateCharge, TakeFromPool, ReturnToPool, DestroyObj, false, 5, 10);
 
         GameObject[] prewarmArray = new GameObject[30];
 
@@ -56,40 +66,92 @@ public class PlayerLaserPool : MonoBehaviour
         fireTimer += Time.deltaTime;
 
         // If left mouse button is pressed down and the firerate has refreshed
-        if(Input.GetKey(KeyCode.Mouse0) && fireTimer >= fireRate)
+        if(Input.GetButtonDown("Fire1"))
         {
-            Shoot(); // Shoot
-            fireTimer = 0f; // Reset the timer
+            if(fireTimer >= fireRate) {
+                ShootNormal(); // Shoot
+                fireTimer = 0f; // Reset the timer
+            }
+
+            // Reset charge whenever you press the button
+            currentChargeTime = 0f;
+            isFullyCharged = false;
+        }
+
+        if (Input.GetButton("Fire1"))
+        {
+            currentChargeTime += Time.deltaTime;
+
+            if(currentChargeTime >= 0.25f)
+            {
+                shipChargeEffect.Play();
+            }
+            
+
+            if(currentChargeTime >= chargeTimeRequired && !isFullyCharged)
+            {
+                isFullyCharged = true;
+                shipChargeEffect.transform.localScale = new Vector3(2f, 2f, 2f);
+
+                FindLockOnTarget();
+            }
+        }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            if (isFullyCharged)
+            {
+                ShootChargeShot();
+            }
+
+            currentChargeTime = 0f;
+            isFullyCharged = false;
+            shipChargeEffect.Stop();
+            shipChargeEffect.Clear(); // Wipes any remaining particles
+            shipChargeEffect.transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
 
-    private void Shoot()
+    private void ShootNormal()
     {
         int currDamage = (blasterUpgrade == 2) ? 20 : 10;
 
         if(blasterUpgrade == 0)
         {
-            ShootFromPoint(centerShootPoint, currDamage);
+            ShootFromPoint(centerShootPoint, currDamage, laserPool);
         } else
         {
-            ShootFromPoint(leftShootPoint, currDamage);
-            ShootFromPoint(rightShootPoint, currDamage);
+            ShootFromPoint(leftShootPoint, currDamage, laserPool);
+            ShootFromPoint(rightShootPoint, currDamage, laserPool);
         }
     }
 
-    private void ShootFromPoint(Transform laserPoint, int damage)
+    private void ShootChargeShot()
     {
-        GameObject activeLaser = laserPool.Get();
+        ShootFromPoint(centerShootPoint, 50, chargePool);
+
+        // Todo: pass locked-on target to the projectile so it can curve toward it
+    }
+
+    private void ShootFromPoint(Transform laserPoint, int damage, ObjectPool<GameObject> poolToUse)
+    {
+        GameObject activeProj = poolToUse.Get();
 
         // Snap it to the gun barrel and point it forward
-        activeLaser.transform.position = laserPoint.position;
-        activeLaser.transform.rotation = laserPoint.rotation;
+        activeProj.transform.position = laserPoint.position;
+        activeProj.transform.rotation = laserPoint.rotation;
 
-        LaserProjectile laserScript = activeLaser.GetComponent<LaserProjectile>();
-        if(laserScript != null)
+        LaserProjectile projScript = activeProj.GetComponent<LaserProjectile>();
+        if(projScript != null)
         {
-            laserScript.damage = damage;
+            projScript.damage = damage;
         }
+    }
+
+    private void FindLockOnTarget()
+    {
+        // Implemented later
+        Debug.Log("Charging complete. Locking on...");
     }
 
     public void UpgradeBlaster()
@@ -113,19 +175,28 @@ public class PlayerLaserPool : MonoBehaviour
         return laser;
     }
 
-    private void TakeLaserFromPool(GameObject laser)
+    private GameObject CreateCharge()
+    {
+        GameObject chargeShot = Instantiate(chargeShotPrefab);
+
+        chargeShot.GetComponent<LaserProjectile>().SetPool(chargePool);
+        chargeShot.SetActive(false);
+        return chargeShot;
+    }
+
+    private void TakeFromPool(GameObject laser)
     {
         // Turn it on when the player shoots
         laser.SetActive(true);
     }
 
-    private void ReturnLaserToPool(GameObject laser)
+    private void ReturnToPool(GameObject laser)
     {
         // Make sure it's turned off when it comes back
         laser.SetActive(false);
     }
 
-    private void DestroyLaser(GameObject laser)
+    private void DestroyObj(GameObject laser)
     {
         // Completely delete it from memory if the pool overflows
         Destroy(laser);
