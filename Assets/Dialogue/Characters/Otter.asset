@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4874b711b4f493f4583733c1d88e5cb9, type: 3}
+  m_Name: Otter
+  m_EditorClassIdentifier: 
+  characterName: Octavia
+  portrait: {fileID: 1162500854, guid: fb76dc8755a39cf4a873276d8f0dd187, type: 3}
+  animatorController: {fileID: 9100000, guid: 6a36fe286aab23848b3a892c26ee4f9e, type: 2}
+  voiceSound: {fileID: 8300000, guid: f36e1f8711613784db2d1eb5d242526d, type: 3}
+  voicePitch: 1.1

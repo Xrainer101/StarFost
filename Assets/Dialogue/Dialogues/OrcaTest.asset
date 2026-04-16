@@ -10,18 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13aa3251709a5f749aac2049e22cc9a3, type: 3}
-  m_Name: FostTestDialogue
+  m_Name: OrcaTest
   m_EditorClassIdentifier: 
-  characterName: Fost
-  portrait: {fileID: 21300000, guid: 21bda9583708b48449bdcdd895b74558, type: 3}
+  characterData: {fileID: 11400000, guid: 6179245686a55bc408425ac169d1c607, type: 2}
   dialogueLines:
-  - I'm Fost
-  - Fost In Space
-  - I bet you're wondering how I ended up here
-  - Well that's a long story
-  - I'll have to save that for another time
-  - We've got baddies to shoot at
+  - Me am Orca
+  - ORCA ORCA
   autoProgressDelay: 1.5
   typingSpeed: 0.05
-  voiceSound: {fileID: 8300000, guid: 55263c485fa46b24cb977aa0c7dd3eca, type: 3}
-  voicePitch: 1
