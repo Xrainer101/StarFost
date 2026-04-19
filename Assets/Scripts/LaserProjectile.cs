@@ -51,10 +51,22 @@ public class LaserProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy")) // Need to implement Enemy tag onto enemies later
+        // The laser moves through the player
+        if (other.CompareTag("Player"))
         {
-            // other.GetComponent<Health>().TakeDamage(10)
-            Deactivate(); // Return to pool on impact
+            return;
         }
+
+        // Hitting an enemy
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
+            if(enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(damage);
+            }
+        }
+
+        Deactivate(); // Return to pool on impact
     }
 }

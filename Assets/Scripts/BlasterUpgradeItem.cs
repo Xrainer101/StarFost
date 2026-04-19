@@ -36,10 +36,7 @@ public class BlasterUpgradeItem : MonoBehaviour
                 // Upgrade
                 playerLaserPool.UpgradeBlaster();
 
-                // Particle effect
-                ParticleSystem collectEffect = Instantiate(collectEffectsPrefab); // Instantiate so it keeps going after the item is destroyed
-                collectEffect.transform.position = upgradeTransform.position;
-                collectEffect.Play();
+                Instantiate(collectEffectsPrefab, upgradeTransform.position, Quaternion.identity);
 
                 // Destroy the item
                 Destroy(gameObject);
