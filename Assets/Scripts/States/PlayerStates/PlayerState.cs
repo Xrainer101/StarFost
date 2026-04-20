@@ -16,6 +16,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
     protected int tapCountL, tapCountR;
     protected bool isRolling;
 
+
     public PlayerState(PlayerStateMachine context, PlayerStateMachine.EPlayerState ePlayerState) : base(ePlayerState)
     {
         ctx = context;
@@ -25,11 +26,21 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
     protected void Movement()
     {
         if(!somersault) {
-            ctx.transform.Translate(Vector3.forward * ctx.moveSpeed * Time.deltaTime);
+            Vector3 input = new Vector3(horiInput, vertInput, 0);
+            Vector3 forwardMove = Vector3.forward * ctx.moveSpeed;
+            Vector3 strafeMove = input * ctx.moveSpeed;
+            Vector3 knockback = ctx.hitOffset;
 
-            Vector3 movement = new Vector3(horiInput, vertInput, 0);
-            ctx.transform.position += new Vector3(movement.x, movement.y, movement.z) * ctx.moveSpeed * Time.deltaTime;
-            if (rollLeft || rollRight) ctx.transform.position += new Vector3(movement.x * 1.5f, movement.y, movement.z) * ctx.moveSpeed * Time.deltaTime;
+            Vector3 finalMove = forwardMove + strafeMove + knockback;
+            //decay knockback, impulse
+            ctx.hitOffset = Vector3.Lerp(ctx.hitOffset, Vector3.zero, ctx.hitDecay * Time.deltaTime);
+
+            ctx.transform.position += finalMove * Time.deltaTime;
+
+            if (rollLeft || rollRight)
+            {
+                ctx.transform.position += input * 1.5f * ctx.moveSpeed * Time.deltaTime;
+            }
         }
     }
 
