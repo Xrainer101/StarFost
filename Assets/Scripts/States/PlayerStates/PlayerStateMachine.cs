@@ -27,6 +27,11 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     public CinemachineTransposer vTransposer;
     public HUDManager hudManager;
 
+    [Header("Knockback variables")]
+    public Vector3 hitOffset;
+    public float hitDecay = 5f;
+    public float knockbackStrength = 2f;
+
     [Header("Boost variables")]
     public ShipEmissions shipEmitters;
     public Vector3 normalOffset = new Vector3(0, 1, -8);
@@ -58,5 +63,9 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
         States.Add(EPlayerState.AllRange, new OnRailsState(this, EPlayerState.AllRange));
         States.Add(EPlayerState.Death, new OnRailsState(this, EPlayerState.Death));
         CurrentState = States[EPlayerState.OnRails];
+    }
+    public void ApplyKnockback(Vector3 sourcePosition)
+    {
+        hitOffset = -transform.forward * knockbackStrength;
     }
 }
