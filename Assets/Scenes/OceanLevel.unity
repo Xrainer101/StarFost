@@ -242,7 +242,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 30
-  explosionPrefab: {fileID: 0}
+  explosionPrefab: {fileID: 367408433492572271, guid: 598994b96f15f407daa65505bfe267a6,
+    type: 3}
 --- !u!1 &69163207
 GameObject:
   m_ObjectHideFlags: 0
@@ -8322,6 +8323,9 @@ MonoBehaviour:
   vCam: {fileID: 554436291}
   vTransposer: {fileID: 0}
   hudManager: {fileID: 385646616}
+  hitOffset: {x: 0, y: 0, z: 0}
+  hitDecay: 5
+  knockbackStrength: 2
   shipEmitters: {fileID: 1229990232}
   normalOffset: {x: 0, y: 1, z: -8}
   boostOffset: {x: 0, y: 1, z: -9}
