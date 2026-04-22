@@ -66,6 +66,10 @@ public class LaserProjectile : MonoBehaviour
                 enemyHealth.TakeDamage(damage);
             }
         }
+        if(other.CompareTag("Target"))
+        {
+            Destroy(other.gameObject);
+        }
 
         Deactivate(); // Return to pool on impact
     }

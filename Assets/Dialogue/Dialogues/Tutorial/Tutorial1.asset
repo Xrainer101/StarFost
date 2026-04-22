@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13aa3251709a5f749aac2049e22cc9a3, type: 3}
+  m_Name: Tutorial1
+  m_EditorClassIdentifier: 
+  characterData: {fileID: 11400000, guid: 7968fb302ccaa7f479dffbe699c7b496, type: 2}
+  dialogueLines:
+  - Welcome to the tutorial, I'll teach you the basics
+  - 'Use WASD or the Arrow Keys to move around '
+  autoProgressDelay: 1
+  typingSpeed: 0.03

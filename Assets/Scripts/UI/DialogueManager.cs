@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager dialogueManager;
+
     public Dialogue dialogueData;
     public Dialogue[] dialogueLines;
     private Queue<Dialogue> dialogueQueue = new Queue<Dialogue>();
@@ -26,18 +28,14 @@ public class DialogueManager : MonoBehaviour
 
     void Awake()
     {
+        //single instance
+        if (dialogueManager == null) dialogueManager = this;
         audioSource = GetComponent<AudioSource>();
         animator = dialoguePanel.GetComponent<Animator>();
     }
     public bool CanDialogue()
     {
         return !isDialogueActive;
-    }
-    //temp for testing
-    void Start()
-    {
-        Dialogue();
-        QueueDialogue(dialogueLines);
     }
     public void QueueDialogue(Dialogue[] newDialogues)
     {
@@ -57,14 +55,10 @@ public class DialogueManager : MonoBehaviour
             dialogueQueue.Enqueue(newDialogue);
         }
     }
-    public void SetDialogue(Dialogue newDialogue)
-    {
-        dialogueData = newDialogue;
-    }
     //call from other places with correct dialogue
     public void Dialogue(Dialogue newDialogue)
     {
-        SetDialogue(newDialogue);
+        dialogueData = newDialogue;
         Dialogue();
     }
     public void Dialogue()
