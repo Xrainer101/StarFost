@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 7968fb302ccaa7f479dffbe699c7b496, type: 2}
   dialogueLines:
-  - This is Grass City, we need to protect it from Star Pablo
-  - We have to hold the perimeter or we'll lose everything
+  - This is Grassland City, we need to protect it from Star Pablo
+  - Let's head to the perimeter to hold the line
   autoProgressDelay: 1
   typingSpeed: 0.03

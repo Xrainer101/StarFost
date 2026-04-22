@@ -26,12 +26,23 @@ public class DialogueManager : MonoBehaviour
     private bool isTyping, isDialogueActive;
     private Coroutine typingCoroutine;
 
+    [SerializeField] Image ammoFill;
+    [SerializeField] Image shieldsFill;
+    [SerializeField] GameObject lifeObj;
+    [SerializeField] GameObject livesGroup;
+
     void Awake()
     {
         //single instance
         if (dialogueManager == null) dialogueManager = this;
         audioSource = GetComponent<AudioSource>();
         animator = dialoguePanel.GetComponent<Animator>();
+    }
+    void Start()
+    {
+        setAmmo(1f);
+        setShields(1f);
+        setLives(3);
     }
     public bool CanDialogue()
     {
@@ -183,6 +194,28 @@ public class DialogueManager : MonoBehaviour
         {
             audioSource.pitch = Random.Range(0.95f, 1.05f) * dialogueData.characterData.voicePitch;
             audioSource.PlayOneShot(dialogueData.characterData.voiceSound);
+        }
+    }
+    //Fill bars
+    public void setAmmo(float fillAmt)
+    {
+        ammoFill.fillAmount = fillAmt;
+    }
+    public void setShields(float fillAmt)
+    {
+        shieldsFill.fillAmount = fillAmt;
+    }
+    public void setLives(int lives)
+    {
+        for (int i = livesGroup.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = livesGroup.transform.GetChild(i);
+            Destroy(child.gameObject); // Schedules destruction at end of frame
+        }
+        for(int i = 0 ; i < lives ; i++)
+        {
+            GameObject life = Instantiate(lifeObj);
+            life.transform.parent = livesGroup.transform;
         }
     }
 }
