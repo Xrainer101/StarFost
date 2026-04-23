@@ -57,7 +57,7 @@ public class LaserProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // The laser moves through the player
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Collectable"))
         {
             return;
         }
@@ -65,13 +65,30 @@ public class LaserProjectile : MonoBehaviour
         // Impact explosion for visual and audio feedback
         if(impactPrefab != null)
         {
-            // Get the closest point on the surface of whatever the laser collided with
-            Vector3 surfacePoint = other.ClosestPoint(transform.position);
+            // Variables for spawning explosion
+            Vector3 pushDir = -transform.forward;
+            Vector3 surfacePoint;
 
-            // Get a point slightly outside the collider
-            Vector3 impactPoint = surfacePoint - (transform.forward * 0.5f);
+            // Shoot a ray from 2 meters behind the laser to hit the surface of the building
+            Vector3 rayOrigin = transform.position - (transform.forward * 2f);
 
+            // If we hit something (ignoring the laser's own trigger collider)
+            if(Physics.Raycast(rayOrigin, transform.forward, out RaycastHit hit, 3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                // Save the spot on the wall
+                surfacePoint = hit.point;
+                // Get the normal of the wall
+                pushDir = hit.normal;
+            } else
+            {
+                // If not, just get the closest point on the wall the laser collided with
+                surfacePoint = other.ClosestPoint(transform.position);
+            }
 
+            // Get a point pushed slightly outside the collider
+            Vector3 impactPoint = surfacePoint + (pushDir * 0.2f);
+
+            // Spawnt he explosion
             GameObject impact = Instantiate(impactPrefab, impactPoint, transform.rotation);
             impact.GetComponent<AudioSource>().volume = 0.3f;
             impact.transform.localScale *= impactScale;
