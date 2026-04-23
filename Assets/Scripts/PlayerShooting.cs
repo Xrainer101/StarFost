@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PlayerLaserPool : MonoBehaviour
+public class PlayerShooting : MonoBehaviour
 {
     [Header("Upgrade State")]
     [Range(0,2)] // Adds a slider in the Unity editor for the below variable
@@ -29,9 +29,20 @@ public class PlayerLaserPool : MonoBehaviour
     private bool isFullyCharged = false;
     private ObjectPool<GameObject> chargePool;
 
+    [Header("Lock-On Settings")]
+    public float lockOnRadius = 15f; // How thick the scanning cylinder is
+    public float lockOnDistance = 200f; // How far forward it scans
+    public RectTransform lockOnReticle;
+    public float lockBreakAngle = 25f; // How off-center the enemy can get before the lock breaks
+
+    private Transform currentTarget;
+    private Camera mainCam;
+
     // Start is called before the first frame update
     void Start()
     {
+        mainCam = Camera.main;
+
         // Initialize the pool
         laserPool = new ObjectPool<GameObject>(
             createFunc: CreateLaser,          // 1. How to make a new laser
@@ -78,25 +89,52 @@ public class PlayerLaserPool : MonoBehaviour
             isFullyCharged = false;
         }
 
+        // While holding the button
         if (Input.GetButton("Fire1"))
         {
+            // Increase charge time
             currentChargeTime += Time.deltaTime;
 
-            if(currentChargeTime >= 0.25f)
+            // If held down long enough, the charging effect plays
+            if(currentChargeTime >= 0.25f && !shipChargeEffect.isPlaying)
             {
                 shipChargeEffect.Play();
             }
             
-
-            if(currentChargeTime >= chargeTimeRequired && !isFullyCharged)
+            // If held down longer, the shot is fully charged
+            if(currentChargeTime >= chargeTimeRequired)
             {
-                isFullyCharged = true;
-                shipChargeEffect.transform.localScale = new Vector3(2f, 2f, 2f);
+                // If we aren't fully charged already,
+                if(!isFullyCharged) {
+                    isFullyCharged = true;  // set the boolean
+                    shipChargeEffect.transform.localScale = new Vector3(2f, 2f, 2f); // make charge effect bigger
+                }
 
-                FindLockOnTarget();
+                // If no locked-on target,
+                if(currentTarget == null)
+                {
+                    FindLockOnTarget(); // Get the target
+                } else // If we have a target
+                {
+                    // Get the direction from the ship's noise to the target
+                    Vector3 directionToTarget = currentTarget.position - centerShootPoint.position;
+
+                    // Get the angle of where the ship's facing and the direction to the target
+                    float angleToTarget = Vector3.Angle(centerShootPoint.forward, directionToTarget);
+
+                    // If our aim is too off-center,
+                    if(angleToTarget > lockBreakAngle)
+                    {
+                        // Set target to null
+                        currentTarget = null;
+
+                        // UI will automatically disappear because of code in LateUpdate
+                    }
+                }
             }
         }
 
+        // Releasing the button
         if (Input.GetButtonUp("Fire1"))
         {
             if (isFullyCharged)
@@ -104,11 +142,46 @@ public class PlayerLaserPool : MonoBehaviour
                 ShootChargeShot();
             }
 
+            // Cleanup
             currentChargeTime = 0f;
             isFullyCharged = false;
             shipChargeEffect.Stop();
             shipChargeEffect.Clear(); // Wipes any remaining particles
             shipChargeEffect.transform.localScale = new Vector3(1f, 1f, 1f);
+
+            currentTarget = null;
+            if(lockOnReticle != null) lockOnReticle.gameObject.SetActive(false);
+        }
+    }
+
+    void LateUpdate()
+    {
+        if (currentTarget != null && lockOnReticle != null)
+        {
+            // If the enemy is destroyed before we shoot, hide the UI
+            if (!currentTarget.gameObject.activeInHierarchy)
+            {
+                lockOnReticle.gameObject.SetActive(false);
+                currentTarget = null;
+                return;
+            }
+
+            // Logic for lock-on reticle position
+            Vector3 screenPos = mainCam.WorldToScreenPoint(currentTarget.position);
+            if (screenPos.z > 0)
+            {
+                lockOnReticle.position = screenPos;
+                if (!lockOnReticle.gameObject.activeSelf) lockOnReticle.gameObject.SetActive(true);
+            }
+            else
+            {
+                lockOnReticle.gameObject.SetActive(false);
+            }
+        }
+        // Turn off reticle if target becomes null
+        else if (lockOnReticle != null && lockOnReticle.gameObject.activeSelf)
+        {
+            lockOnReticle.gameObject.SetActive(false);
         }
     }
 
@@ -128,12 +201,12 @@ public class PlayerLaserPool : MonoBehaviour
 
     private void ShootChargeShot()
     {
-        ShootFromPoint(centerShootPoint, 50, chargePool);
+        ShootFromPoint(centerShootPoint, 50, chargePool, currentTarget);
 
         // Todo: pass locked-on target to the projectile so it can curve toward it
     }
 
-    private void ShootFromPoint(Transform laserPoint, int damage, ObjectPool<GameObject> poolToUse)
+    private void ShootFromPoint(Transform laserPoint, int damage, ObjectPool<GameObject> poolToUse, Transform target = null)
     {
         GameObject activeProj = poolToUse.Get();
 
@@ -145,13 +218,38 @@ public class PlayerLaserPool : MonoBehaviour
         if(projScript != null)
         {
             projScript.damage = damage;
+
+            if(target != null)
+            {
+                projScript.homingTarget = currentTarget;
+            }
         }
     }
 
-    private void FindLockOnTarget()
+        private void FindLockOnTarget()
     {
-        // Implemented later
-        Debug.Log("Charging complete. Locking on...");
+        // Shoot a massive invisible cylinder forward
+        RaycastHit[] hits = Physics.SphereCastAll(centerShootPoint.position, lockOnRadius, centerShootPoint.forward, lockOnDistance);
+        
+        float closestDistance = Mathf.Infinity;
+
+        // Loop through everything we hit
+        foreach (RaycastHit hit in hits)
+        {
+            // Did we catch an enemy?
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                // Find out how far away it is
+                float distanceToEnemy = Vector3.Distance(centerShootPoint.position, hit.transform.position);
+                
+                // If this is the closest one we've found so far, save it!
+                if (distanceToEnemy < closestDistance)
+                {
+                    closestDistance = distanceToEnemy;
+                    currentTarget = hit.transform;
+                }
+            }
+        }
     }
 
     public void UpgradeBlaster()

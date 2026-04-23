@@ -15,6 +15,10 @@ public class LaserProjectile : MonoBehaviour
     [Range(0.1f, 2f)]
     public float impactScale = 0.3f;
 
+    [Header("Homing Settings")]
+    public Transform homingTarget;
+    public float turnSpeed = 10f;
+
     private float lifeTimer;
 
     // Reference to the pool that owns this laser
@@ -30,11 +34,35 @@ public class LaserProjectile : MonoBehaviour
     void OnEnable()
     {
         lifeTimer = 0f;
+        homingTarget = null;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Homing stuff
+        if (homingTarget != null)
+        {
+            // If the enemy is destroyed, homingTarget becomes null automatically.
+            // If the enemy is disabled, set to null manually
+            if (!homingTarget.gameObject.activeInHierarchy)
+            {
+                homingTarget = null;
+            }
+            else
+            {
+                // Calculate the direction to the target
+                Vector3 direction = (homingTarget.position - transform.position).normalized;
+                
+                // Calculate the rotation needed to look at that direction
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                
+                // Smoothly rotate toward that angle
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
+        }
+
+        // All projectiles programming
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
         lifeTimer += Time.deltaTime;

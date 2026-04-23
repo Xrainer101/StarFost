@@ -28,13 +28,13 @@ public class BlasterUpgradeItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Get the player's laser script
-            PlayerLaserPool playerLaserPool = other.GetComponentInParent<PlayerLaserPool>();
+            PlayerShooting playerShooting = other.GetComponentInParent<PlayerShooting>();
 
             // If we do,
-            if(playerLaserPool != null)
+            if(playerShooting != null)
             {
                 // Upgrade
-                playerLaserPool.UpgradeBlaster();
+                playerShooting.UpgradeBlaster();
 
                 Instantiate(collectEffectsPrefab, upgradeTransform.position, Quaternion.identity);
 
