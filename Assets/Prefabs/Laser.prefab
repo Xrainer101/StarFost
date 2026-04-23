@@ -49,6 +49,9 @@ MonoBehaviour:
   speed: 350
   lifeTime: 2
   damage: 10
+  impactPrefab: {fileID: 367408433492572271, guid: 598994b96f15f407daa65505bfe267a6,
+    type: 3}
+  impactScale: 0.313
 --- !u!54 &6253314002013021440
 Rigidbody:
   m_ObjectHideFlags: 0

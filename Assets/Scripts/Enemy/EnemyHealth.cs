@@ -33,7 +33,8 @@ public class EnemyHealth : MonoBehaviour
     {
         if(explosionPrefab != null)
         {
-            Instantiate(explosionPrefab, transform.position, transform.rotation);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            explosion.GetComponent<AudioSource>().volume = 1f;
         }
 
         Destroy(gameObject);

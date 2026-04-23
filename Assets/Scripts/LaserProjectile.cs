@@ -10,6 +10,11 @@ public class LaserProjectile : MonoBehaviour
     public float lifeTime = 2f;
     public int damage = 10;
 
+    [Header("Impact Settings")]
+    public GameObject impactPrefab;
+    [Range(0.1f, 2f)]
+    public float impactScale = 0.3f;
+
     private float lifeTimer;
 
     // Reference to the pool that owns this laser
@@ -57,6 +62,21 @@ public class LaserProjectile : MonoBehaviour
             return;
         }
 
+        // Impact explosion for visual and audio feedback
+        if(impactPrefab != null)
+        {
+            // Get the closest point on the surface of whatever the laser collided with
+            Vector3 surfacePoint = other.ClosestPoint(transform.position);
+
+            // Get a point slightly outside the collider
+            Vector3 impactPoint = surfacePoint - (transform.forward * 0.5f);
+
+
+            GameObject impact = Instantiate(impactPrefab, impactPoint, transform.rotation);
+            impact.GetComponent<AudioSource>().volume = 0.3f;
+            impact.transform.localScale *= impactScale;
+        }
+
         // Hitting an enemy
         if (other.CompareTag("Enemy"))
         {
@@ -66,6 +86,8 @@ public class LaserProjectile : MonoBehaviour
                 enemyHealth.TakeDamage(damage);
             }
         }
+
+        // Hitting a target in the tutorial
         if(other.CompareTag("Target"))
         {
             Destroy(other.gameObject);
