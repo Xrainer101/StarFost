@@ -5,6 +5,10 @@ using UnityEngine.Pool;
 
 public class LaserProjectile : MonoBehaviour
 {
+    [Header("Targeting")]
+    public string targetTag = "Enemy";
+    public string ignoreTag = "Player";
+
     [Header("Laser Settings")]
     public float speed = 100f;
     public float lifeTime = 2f;
@@ -79,13 +83,16 @@ public class LaserProjectile : MonoBehaviour
         if(myPool != null)
         {
             myPool.Release(gameObject);
+        } else
+        {
+            Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // The laser moves through the player
-        if (other.CompareTag("Player") || other.CompareTag("Collectable"))
+        // The laser moves through the firer and collectables
+        if (other.CompareTag(ignoreTag) || other.CompareTag("Collectable"))
         {
             return;
         }
@@ -122,13 +129,20 @@ public class LaserProjectile : MonoBehaviour
             impact.transform.localScale *= impactScale;
         }
 
-        // Hitting an enemy
-        if (other.CompareTag("Enemy"))
+        // Hitting the target
+        if (other.CompareTag(targetTag))
         {
+            // Damage enemy if enemy is hit
             EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
             if(enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage);
+            }
+
+            // Damage the player if player is hit
+            PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
+            if (playerHealth != null) {
+                playerHealth.TakeDamage(damage);
             }
         }
 
