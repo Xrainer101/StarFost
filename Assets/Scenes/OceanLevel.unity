@@ -8264,6 +8264,7 @@ MonoBehaviour:
   lockOnRadius: 15
   lockOnDistance: 200
   lockOnReticle: {fileID: 1242770326}
+  lockBreakAngle: 35
 --- !u!54 &1229990235
 Rigidbody:
   m_ObjectHideFlags: 0
