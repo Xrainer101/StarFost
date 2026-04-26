@@ -18,6 +18,7 @@ public class EnemyShooting : MonoBehaviour
     private Transform playerTarget;
     private Vector3 restingForward;
 
+    // Start is called before the first frame update
     void Start()
     {
         restingForward = transform.forward;
@@ -31,6 +32,7 @@ public class EnemyShooting : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
     void Update()
     {
         // If the player is dead or missing, stop running this code
