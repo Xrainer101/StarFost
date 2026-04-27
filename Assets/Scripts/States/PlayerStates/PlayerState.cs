@@ -157,6 +157,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
         // Bring deflection object up and roll particle effect
         ctx.barrelDeflect.SetActive(true);
         ctx.barrelRollEffect.Play();
+        ctx.barrelRollAudioSource.Play();
         isRolling = true;
 
         // Change the direction of the effect for each barrel roll direction
@@ -203,7 +204,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
 
         if(Input.GetKey(KeyCode.LeftShift) && hasEnergy) // Boost
         {
-            SpeedAction(20f, ctx.boostOffset, ctx.boostFOV);
+            SpeedAction(ctx.originalSpeed*1.5f, ctx.boostOffset, ctx.boostFOV);
             ctx.shipEmitters.EmitBoost();
             ctx.hudManager.actionCooling = false; // Drain the boost meter
             if(!isBoosting)
@@ -213,13 +214,13 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
             }
         } else if(Input.GetKey(KeyCode.LeftControl) && hasEnergy) // Brake
         {
-            SpeedAction(5f, ctx.brakeOffset, ctx.brakeFOV);
+            SpeedAction(ctx.originalSpeed*0.5f, ctx.brakeOffset, ctx.brakeFOV);
             ctx.shipEmitters.EmitBrake();
             ctx.hudManager.actionCooling = false; // Drain the boost meter
             isBoosting = false;
         } else // Normal speed
         {
-            SpeedAction(ctx.speedStore, ctx.normalOffset, ctx.normalFOV);
+            SpeedAction(ctx.originalSpeed, ctx.normalOffset, ctx.normalFOV);
             ctx.hudManager.actionCooling = true; // Regen the boost meter
             ctx.shipEmitters.EmitNorm();
             isBoosting = false;

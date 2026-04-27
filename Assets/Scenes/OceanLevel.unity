@@ -919,6 +919,11 @@ PrefabInstance:
       propertyPath: winScreenPanel
       value: 
       objectReference: {fileID: 5237615703393012385}
+    - target: {fileID: 3264958193655504703, guid: afc11617b9666498b8f12f6c23c9ed28,
+        type: 3}
+      propertyPath: deathScreenPanel
+      value: 
+      objectReference: {fileID: 5237615703393012386}
     - target: {fileID: 3947152667284657249, guid: afc11617b9666498b8f12f6c23c9ed28,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4314,6 +4319,12 @@ PrefabInstance:
 --- !u!1 &5237615703393012385 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3396251093087878473, guid: fcf48d5a0b1934dddae97f8d54e6d817,
+    type: 3}
+  m_PrefabInstance: {fileID: 5237615703393012384}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5237615703393012386 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7787706063373808915, guid: fcf48d5a0b1934dddae97f8d54e6d817,
     type: 3}
   m_PrefabInstance: {fileID: 5237615703393012384}
   m_PrefabAsset: {fileID: 0}

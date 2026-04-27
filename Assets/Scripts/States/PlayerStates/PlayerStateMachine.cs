@@ -18,7 +18,7 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
 
     [Header("Normal movement variables")] // for movement
     public float moveSpeed = 15f;
-    public float speedStore;
+    public float originalSpeed = 15f;
     public float tilt = 30f;
     public float tiltSpeed = 0.1f;
     public float leanSpeed;
@@ -49,10 +49,11 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     public float barrelEffectSpeed;
     public GameObject barrelDeflect;
     public ParticleSystem barrelRollEffect;
+    public AudioSource barrelRollAudioSource;
 
     void Awake()
     {
-        speedStore = moveSpeed;
+        originalSpeed = moveSpeed;
         shipEmitters = GetComponent<ShipEmissions>();
         InitializeStates(); // Initialize the states before the game starts
     }
