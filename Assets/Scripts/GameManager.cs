@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     [Header("UI References")]
     public GameObject winScreenPanel;
 
+    [Header("Audio References")]
+    public MusicManager musicManager;
+
     void Awake()
     {
         //single instance
@@ -52,6 +55,10 @@ public class GameManager : MonoBehaviour
         // Pause everything
         Time.timeScale = 0f;
 
+        if(musicManager != null)
+        {
+            musicManager.PlayVictoryMusic();
+        }
         Debug.Log("I WON!");
     }
 

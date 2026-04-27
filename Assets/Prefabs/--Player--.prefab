@@ -75,7 +75,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -20362,8 +20362,6 @@ MonoBehaviour:
   wingTrails:
   - {fileID: 5066665775575192703}
   - {fileID: 8394221371494456019}
-  engineAudioSource: {fileID: 212575137740198113}
-  boostSound: {fileID: 8300000, guid: a32c7cb5acd524ac8a55beb0f41a30c5, type: 3}
   emitTrails: 0
   scaleMultiplier: 1.5
   scaleSpeed: 5
