@@ -19987,6 +19987,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   healthSlider: {fileID: 0}
+  invincibilityDuration: 1
+  flickerSpeed: 0.1
+  shipRenderers:
+  - {fileID: 6175894495070684866}
 --- !u!54 &4493014357254005343
 Rigidbody:
   m_ObjectHideFlags: 0

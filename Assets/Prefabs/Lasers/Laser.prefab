@@ -46,12 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a47a51d8a1434e23873da33c139ef66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetTag: Enemy
+  ignoreTag: Player
   speed: 350
   lifeTime: 2
   damage: 10
   impactPrefab: {fileID: 367408433492572271, guid: 598994b96f15f407daa65505bfe267a6,
     type: 3}
   impactScale: 0.313
+  homingTarget: {fileID: 0}
+  turnSpeed: 10
 --- !u!54 &6253314002013021440
 Rigidbody:
   m_ObjectHideFlags: 0

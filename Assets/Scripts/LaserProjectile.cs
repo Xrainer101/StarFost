@@ -83,7 +83,7 @@ public class LaserProjectile : MonoBehaviour
         if(myPool != null)
         {
             myPool.Release(gameObject);
-        } else
+        } else // If it's not part of a pool, destroy it
         {
             Destroy(gameObject);
         }
@@ -92,7 +92,7 @@ public class LaserProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // The laser moves through the firer and collectables
-        if (other.CompareTag(ignoreTag) || other.CompareTag("Collectable"))
+        if (other.CompareTag(ignoreTag) || other.CompareTag("Collectable") || other.isTrigger)
         {
             return;
         }
