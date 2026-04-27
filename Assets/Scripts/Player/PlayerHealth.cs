@@ -16,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
 
     // Array in case ship ever becomes multiple pieces
     public MeshRenderer[] shipRenderers;
+    public AudioSource shipHit;
 
     private bool isInvincible = false;
 
@@ -38,6 +39,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damageAmount;
         healthSlider.value = currentHealth;
+        shipHit.Play();
         Debug.Log("Player took damage! Health: " + currentHealth);
 
         // (Optional: You could trigger a camera shake or red UI flash here!)

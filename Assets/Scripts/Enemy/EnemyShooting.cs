@@ -8,6 +8,7 @@ public class EnemyShooting : MonoBehaviour
     public GameObject enemyLaserPrefab;
     public Transform shootPoint;
     public GameObject alertSphere; // For visual clarity
+    public AudioSource laserAudioSource;
     
     [Header("Stats")]
     public float fireRate = 2f; // Shoots every 2 seconds
@@ -80,5 +81,10 @@ public class EnemyShooting : MonoBehaviour
         // Spawn the universal laser. Because we set the tags in the prefab, 
         // it knows to ignore other enemies and strictly hunt the player!
         Instantiate(enemyLaserPrefab, shootPoint.position, shootPoint.rotation);
+
+        if(laserAudioSource != null)
+        {
+            laserAudioSource.Play();
+        }
     }
 }

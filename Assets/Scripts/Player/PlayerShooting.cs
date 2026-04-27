@@ -34,9 +34,13 @@ public class PlayerShooting : MonoBehaviour
     public float lockOnDistance = 200f; // How far forward it scans
     public RectTransform lockOnReticle;
     public float lockBreakAngle = 25f; // How off-center the enemy can get before the lock breaks
-
     private Transform currentTarget;
     private Camera mainCam;
+
+    [Header("Audio")]
+    public AudioSource blasterAudioSource;
+    public AudioClip laserShootSound;
+    public AudioClip chargeShootSound; // Bigger boom
 
     // Start is called before the first frame update
     void Start()
@@ -197,13 +201,21 @@ public class PlayerShooting : MonoBehaviour
             ShootFromPoint(leftShootPoint, currDamage, laserPool);
             ShootFromPoint(rightShootPoint, currDamage, laserPool);
         }
+
+        if(blasterAudioSource != null && laserShootSound != null)
+        {
+            blasterAudioSource.PlayOneShot(laserShootSound);
+        }
     }
 
     private void ShootChargeShot()
     {
         ShootFromPoint(centerShootPoint, 50, chargePool, currentTarget);
 
-        // Todo: pass locked-on target to the projectile so it can curve toward it
+        if(blasterAudioSource != null && chargeShootSound != null)
+        {
+            blasterAudioSource.PlayOneShot(chargeShootSound);
+        }
     }
 
     private void ShootFromPoint(Transform laserPoint, int damage, ObjectPool<GameObject> poolToUse, Transform target = null)
