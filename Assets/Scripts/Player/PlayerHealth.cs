@@ -86,5 +86,9 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("GAME OVER!");
         // Add actual Game Over UI and explosions later.
         gameObject.SetActive(false); 
+        currentHealth = maxHealth;
+        healthSlider.value = currentHealth;
+        //Revive
+        GameManager.gameManager.PlayerDie();
     }
 }

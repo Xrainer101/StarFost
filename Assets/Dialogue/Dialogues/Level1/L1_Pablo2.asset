@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13aa3251709a5f749aac2049e22cc9a3, type: 3}
-  m_Name: L1_Fost
+  m_Name: L1_Pablo2
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 7968fb302ccaa7f479dffbe699c7b496, type: 2}
+  characterData: {fileID: 11400000, guid: 33500b0309b370843be1628fa26b4762, type: 2}
   dialogueLines:
-  - This is Grassland City, we need to protect it from Star Pablo
-  - I'm on my own for now, reinforcements will come later
+  - GRR SEND MORE TROOPS
   autoProgressDelay: 1
   typingSpeed: 0.05

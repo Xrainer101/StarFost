@@ -15,7 +15,7 @@ public class RepeatingLayout : MonoBehaviour
     void Start()
     {
         // Anchor system around player
-        spawnZ = player.position.z - chunkLength * 2;
+        spawnZ = player.position.z - chunkLength;
 
         for (int i = 0; i < chunksOnScreen; i++)
         {
@@ -25,7 +25,7 @@ public class RepeatingLayout : MonoBehaviour
 
     void Update()
     {
-        float despawnZ = player.position.z - chunkLength * 3;
+        float despawnZ = player.position.z - chunkLength;
 
         if (activeChunks.Count > 0)
         {
