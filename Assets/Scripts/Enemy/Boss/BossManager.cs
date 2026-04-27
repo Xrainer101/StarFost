@@ -19,6 +19,7 @@ public class BossManager : MonoBehaviour
     [Header("Boss Parts")]
     // Add as many parts as you want
     public BossPart[] bossParts;
+    public GameObject rootPart;
 
     [Header("Effects")]
     public GameObject finalExplosionPrefab;
@@ -81,8 +82,18 @@ public class BossManager : MonoBehaviour
 
     private void Die()
     {
+        // Set boss to dead
         isDead = true;
 
+        DetachChunk(rootPart);
+
+        // Start death routine
+        StartCoroutine(DeathSequenceRoutine());
+    }
+
+    private IEnumerator DeathSequenceRoutine()
+    {
+        // Big boom
         if(finalExplosionPrefab != null)
         {
             GameObject bigBoom = Instantiate(finalExplosionPrefab, transform.position, transform.rotation);
@@ -90,6 +101,20 @@ public class BossManager : MonoBehaviour
             bigBoom.transform.localScale = new Vector3(50f, 50f, 50f);
         }
 
+        // Turn off boss colliders
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach(Collider col in colliders)
+        {
+            col.enabled = false;
+        }
+
+        // Wait for epic death to stop
+        yield return new WaitForSeconds(3f);
+
+        // Show win screen
+        GameManager.gameManager.ShowWinScreen();
+
+        // Destroy the boss
         Destroy(gameObject);
     }
 }

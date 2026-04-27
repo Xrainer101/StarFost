@@ -508,6 +508,7 @@ MonoBehaviour:
     weakPoint: {fileID: 6393230826486566473}
     armorChunk: {fileID: 4249686628377315180}
     isDetached: 0
+  rootPart: {fileID: 3790405575632024393}
   finalExplosionPrefab: {fileID: 367408433492572271, guid: 598994b96f15f407daa65505bfe267a6,
     type: 3}
 --- !u!114 &6716397004539927607
