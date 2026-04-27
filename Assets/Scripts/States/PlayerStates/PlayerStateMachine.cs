@@ -41,6 +41,7 @@ public class PlayerStateMachine : StateMachine<PlayerStateMachine.EPlayerState>
     public float normalFOV = 60f;
     public float boostFOV = 70f;
     public float brakeFOV = 55f;
+    public AudioSource engineAudioSource;
 
     [Header("Barrel roll variables")]
     public float firstTapTime, timeBetTaps;

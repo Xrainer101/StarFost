@@ -11,6 +11,7 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
     protected bool actionReady;
     protected bool coroutineActive;
     protected bool somersault;
+    protected bool isBoosting;
 
     protected bool rollLeft, rollRight;
     protected int tapCountL, tapCountR;
@@ -205,16 +206,23 @@ public abstract class PlayerState : State<PlayerStateMachine.EPlayerState>
             SpeedAction(20f, ctx.boostOffset, ctx.boostFOV);
             ctx.shipEmitters.EmitBoost();
             ctx.hudManager.actionCooling = false; // Drain the boost meter
+            if(!isBoosting)
+            {
+                isBoosting = true;
+                ctx.engineAudioSource.Play();
+            }
         } else if(Input.GetKey(KeyCode.LeftControl) && hasEnergy) // Brake
         {
             SpeedAction(5f, ctx.brakeOffset, ctx.brakeFOV);
             ctx.shipEmitters.EmitBrake();
             ctx.hudManager.actionCooling = false; // Drain the boost meter
+            isBoosting = false;
         } else // Normal speed
         {
             SpeedAction(ctx.speedStore, ctx.normalOffset, ctx.normalFOV);
             ctx.hudManager.actionCooling = true; // Regen the boost meter
             ctx.shipEmitters.EmitNorm();
+            isBoosting = false;
 
             if(ctx.hudManager.boostMeter.value < 1f)
             {

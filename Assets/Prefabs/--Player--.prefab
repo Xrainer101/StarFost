@@ -20154,7 +20154,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a32c7cb5acd524ac8a55beb0f41a30c5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -20340,6 +20340,7 @@ MonoBehaviour:
   normalFOV: 50
   boostFOV: 65
   brakeFOV: 45
+  engineAudioSource: {fileID: 212575137740198113}
   firstTapTime: 0
   timeBetTaps: 0
   barrelTime: 0.3
