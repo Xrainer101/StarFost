@@ -32,5 +32,5 @@
 
 ---
 ## Credits
-Noah Jones
-Isaac Kim
+- Noah Jones
+- Isaac Kim
