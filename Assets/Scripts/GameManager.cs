@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI References")]
     public GameObject winScreenPanel;
+    public GameObject deathScreenPanel;
 
     [Header("Audio References")]
     public MusicManager musicManager;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
     public void PlayerDie()
     {
         if (lives > 0) StartCoroutine(Revive());
-        else StartCoroutine(ReloadScene());
+        else ShowDeathScreen();
     }
     IEnumerator Revive()
     {
@@ -39,9 +40,10 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator ReloadScene()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
+        Time.timeScale = 1f;
     }
 
     public void ShowWinScreen()
@@ -61,6 +63,20 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log("I WON!");
     }
+    public void ShowDeathScreen()
+    {
+        // Turn on UI
+        if(deathScreenPanel != null)
+        {
+            deathScreenPanel.SetActive(true);
+        }
+        musicManager.StopMusic();
+
+        // Pause everything
+        Time.timeScale = 0f;
+
+        Debug.Log("I LOST!");
+    }
 
     public void LoadMainMenu(string menuSceneName)
     {
@@ -69,5 +85,9 @@ public class GameManager : MonoBehaviour
 
         // Load menu scene
         SceneManager.LoadScene(menuSceneName);
+    }
+    public void LoadSameLevel()
+    {
+        StartCoroutine(ReloadScene());
     }
 }
