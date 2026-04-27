@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Star Fost.sln"
+    "dotnet.defaultSolution": "StarFost.sln"
 }
