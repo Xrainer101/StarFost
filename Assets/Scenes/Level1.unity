@@ -4232,7 +4232,7 @@ PrefabInstance:
     - target: {fileID: 4838409802659916465, guid: fcf48d5a0b1934dddae97f8d54e6d817,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: TitleScreen
+      value: WebGLTitleScreen
       objectReference: {fileID: 0}
     - target: {fileID: 4838409802659916465, guid: fcf48d5a0b1934dddae97f8d54e6d817,
         type: 3}

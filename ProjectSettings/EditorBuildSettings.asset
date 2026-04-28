@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TitleScreen.unity
     guid: fc84ce72e4157734ab02ac4480ae6f1e
-  - enabled: 1
+  - enabled: 0
+    path: Assets/Scenes/WebGLTitleScreen.unity
+    guid: 7805472bb85da436da6087b450291a54
+  - enabled: 0
     path: Assets/Scenes/Tutorial.unity
     guid: c3a8a8a4fabb0b54e959b2eccef31fc1
   - enabled: 1
